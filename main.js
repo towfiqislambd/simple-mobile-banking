@@ -1,42 +1,62 @@
-document.getElementById('casout-btn').addEventListener('click', function () {
-    document.getElementById('cashOut').classList.remove('hidden');
-    document.getElementById('addMoney').classList.add('hidden')
+// Buttons
+document.getElementById('add-money').addEventListener('click', function() {
+    showSectionForm('addMoney');
 })
-
-document.getElementById('addmoney-btn').addEventListener('click', function () {
-    document.getElementById('addMoney').classList.remove('hidden');
-    document.getElementById('cashOut').classList.add('hidden')
+document.getElementById('cash-out').addEventListener('click', function() {
+    showSectionForm('cashOut');
+})
+document.getElementById('transaction-btn').addEventListener('click', function() {
+    showSectionForm('transaction');
 })
 
 
 // Add Money
-
-document.getElementById('addmoneyBtn').addEventListener('click', function (event) {
+document.getElementById('addMoney-btn').addEventListener('click', function(event) {
     event.preventDefault();
-    const amount = document.getElementById('amount').value;
-    const pin = document.getElementById('pin').value;
-    const balance = document.getElementById('current-balance').innerText;
-    if (pin === '1234') {
-        const totalBalance = Number(balance) + Number(amount);
-        document.getElementById('current-balance').innerText = totalBalance;
+    const amount = getInputFieldValueById('addMoney-amount');
+    const pin = getInputFieldValueById('addMoney-pin-number');
+    const currentAmount = getTextValueById('currentBalance');
+    if (pin === 1234) {
+        const newAmount = amount + currentAmount;
+        document.getElementById('currentBalance').innerText = newAmount;
+        document.getElementById('addMoney-amount').value = ''
+        document.getElementById('addMoney-pin-number').value = ''
+
+        // Transaction
+        const p = document.createElement('p');
+        p.innerText = `
+            Added : ${amount} TK. New Balance : ${newAmount};
+        `
+        p.style.fontWeight = '600';
+        document.getElementById('transaction-history').appendChild(p)
     }
-    else {
-        alert('Failed to add money. Please try again later😓')
+    else{
+        alert('Failed to add money. Please try again later')
     }
 })
 
-// Cash Out
 
-document.getElementById('cashout-btn').addEventListener('click', function (event) {
+// Cash Out
+document.getElementById('cashOut-btn').addEventListener('click', function(event) {
     event.preventDefault();
-    const balance = document.getElementById('current-balance').innerText;
-    const amount = document.getElementById('amountNumber').value;
-    const pin = document.getElementById('pinNumber').value;
-    if (pin === '1234') {
-        const totalBalance = Number(balance) - Number(amount);
-        document.getElementById('current-balance').innerText = totalBalance
+    const cashOutAmount = getInputFieldValueById('cashOut-amount');
+    const pinNumber = getInputFieldValueById('cashOut-pin-number');
+    const currentAmount = getTextValueById('currentBalance');
+    if (pinNumber === 1234) {
+        const newAmount = currentAmount - cashOutAmount;
+        document.getElementById('currentBalance').innerText = newAmount;
+        document.getElementById('addMoney-amount').value = ''
+        document.getElementById('addMoney-pin-number').value = ''
+
+        // Transaction
+        const p = document.createElement('p');
+        p.innerText = `
+            Withdraw : ${cashOutAmount} TK. New Balance : ${newAmount};
+        `
+        p.style.fontWeight = '600';
+        document.getElementById('transaction-history').appendChild(p)
     }
-    else {
-        alert('Failed to Cash Out. Please try again later😓')
+    else{
+        alert('Failed to cash out. Please try again later')
     }
 })
